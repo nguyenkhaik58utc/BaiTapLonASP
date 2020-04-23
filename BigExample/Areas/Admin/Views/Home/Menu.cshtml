@@ -1,0 +1,23 @@
+﻿@using EntityFW.EF6;
+@model List<menu>
+
+
+    <div id="sidebar-container">
+        <div id="sidebar-session">
+            <nav id="sidebar">
+                <div class="sidebar-header">
+                    <h3>Menu</h3>
+                    <img id="hide-side-bar" alt="arrow" src="~/images/left-arrow-white.png">
+                </div>
+
+                <ul class="list-unstyled">
+                    @foreach (var item in Model)
+                    {
+                        <li><a href="@Url.Action(item.menu_url, "Home", null)">@item.menu_name</a></li>
+                    }
+                    <li><a href="">Đăng xuất</a></li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+

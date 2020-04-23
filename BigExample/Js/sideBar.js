@@ -8,5 +8,5 @@
 });
 
 function openNav() {
-	$("#sidebar-container").animate({ opacity: "1", width: "14em" });
+	$("#sidebar-container").animate({ opacity: "1", width: "20em" });
 }

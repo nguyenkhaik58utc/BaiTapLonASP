@@ -13,31 +13,20 @@
     <link rel="stylesheet" type="text/css" href="~/css/lock.css">
     <link rel="stylesheet" type="text/css" href="~/css/menu.css">
     <link rel="stylesheet" type="text/css" href="~/css/sideBar.css">
+    <link rel="stylesheet" type="text/css" href="~/css/InforEmp.css">
+    <script src="~/js/Employee.js"></script>
+
+    <script src="https://kit.fontawesome.com/410ba3b69f.js"></script>
 
 </head>
 <body>
-    <div id="sidebar-container">
-        <div id="sidebar-session">
-            <nav id="sidebar">
-                <div class="sidebar-header">
-                    <h3>Menu</h3>
-                    <img id="hide-side-bar" alt="arrow" src="~/images/left-arrow-white.png">
-                </div>
-
-                <ul class="list-unstyled">
-                    <li class="active" id="divMenu">
-
-                    </li>
-                </ul>
-            </nav>
-        </div>
-    </div>
+    @Html.Action("Menu", "Home")
     <section class="clearfix screen-mainmenu">
         <div class="container-fluid" style="margin-top: 120px">
             <div class="row">
                 <!-- LeftMain -->
-                <div id="leftMain" class="col-sm-3 screen-leftmenu infor" style="position: fixed;border-right:dashed;background-color:aqua;min-height:400px">
-                    <p>akjhsdkjdhasjdhds</p>
+                <div id="leftMain" class="col-sm-3 screen-leftmenu infor" style="position: fixed;border-right:dashed;background-color:turquoise;min-height:400px">
+                    @Html.Action("InforEmp", "Home")
                 </div>
                 <!-- Rightmain -->
                 <div id="rightMain" class="col-sm-9 screen-rightmenu" style="background-color:aliceblue;min-height:400px;float:right">
@@ -52,10 +41,10 @@
             <!-- Brand/logo -->
             <ul class="navbar-nav mr-auto ">
                 <li>
-                <div id="mainMenu">
-                    <span style="font-size: 30px; cursor: pointer" onclick="openNav()">&#9776;</span>
-                </div>
-                    </li>
+                    <div id="mainMenu">
+                        <span style="font-size: 30px; cursor: pointer" onclick="openNav()">&#9776;</span>
+                    </div>
+                </li>
             </ul>
             <ul class="navbar-nav justify-content-end" style="float:right">
                 <li><div id="vnclock" align="center" style="overflow-x : hidden; margin-right:20px; margin-top:10px "></div></li>

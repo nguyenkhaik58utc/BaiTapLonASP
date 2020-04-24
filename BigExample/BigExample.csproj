@@ -118,6 +118,7 @@
     <Content Include="images\left-arrow-blue.png" />
     <Content Include="images\left-arrow-white.png" />
     <Content Include="Js\Employee.js" />
+    <Content Include="Js\listEmployee.js" />
     <Content Include="Js\lock.js" />
     <Content Include="Js\menu.js" />
     <Content Include="Js\sideBar.js" />
@@ -131,6 +132,9 @@
     <Content Include="Areas\Admin\Views\Home\Menu.cshtml" />
     <Content Include="Areas\Admin\Views\Home\InforEmp.cshtml" />
     <Content Include="Areas\Admin\Views\Home\AddOT.cshtml" />
+    <Content Include="Areas\Admin\Views\Home\dsNhanVien.cshtml" />
+    <Content Include="Areas\Admin\Views\Home\getRoles.cshtml" />
+    <Content Include="Areas\Admin\Views\Home\getInforEmp.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />

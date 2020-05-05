@@ -135,6 +135,7 @@
     <Content Include="Areas\Admin\Views\Home\dsNhanVien.cshtml" />
     <Content Include="Areas\Admin\Views\Home\getRoles.cshtml" />
     <Content Include="Areas\Admin\Views\Home\getInforEmp.cshtml" />
+    <Content Include="Areas\Admin\Views\Home\addEmployee.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
@@ -148,6 +149,7 @@
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
     <Compile Include="Areas\Admin\Controllers\HomeController.cs" />
     <Compile Include="Areas\Admin\Controllers\LoginController.cs" />
+    <Compile Include="Areas\Admin\Model\EmployeeModel.cs" />
     <Compile Include="Areas\Admin\Model\LoginModel.cs" />
     <Compile Include="Code\SessionHelper.cs" />
     <Compile Include="Code\UserSession.cs" />

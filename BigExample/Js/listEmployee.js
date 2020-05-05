@@ -140,15 +140,19 @@ $(document).on("click", ".next", function () {
 
 // Delete employee
 function getIdEmp() {
-	var table = document.getElementById("tableEmployee");
+	var table = document.getElementById('tableEmployee');
 	for (var i = 1; i < table.rows.length; i++) {
 		table.rows[i].onclick = function name() {
-			document.getElementById("employeeId").value = this.cells[0].innerHTML;
+			var valueID = this.cells[0].innerHTML;
+			var valueName = this.cells[1].innerHTML;
+			document.getElementById('employeeId').value = valueID.trim();
+			$('#titleDelete').html("bạn có muốn xóa " + valueName);
 
 		};
 	}
 
 };
+
 
 // delete row on add button click
 function functionDeleteEmp() {
@@ -159,10 +163,10 @@ function functionDeleteEmp() {
 			row = i;
 		}
 	}
-	document.getElementById("tableEmp").deleteRow(row + 1);
+	document.getElementById("tableEmployee").deleteRow(row + 1);
 	arrayEmp.splice(row, 1);
 	$.ajax({
-		url: "deleteEmp",
+		url: "/Admin/Home/deleteEmployee",
 		type: "POST",
 		data: {
 			employeeId: employeeId,
@@ -208,57 +212,33 @@ function numberPage(res) {
 	pagging(1);
 }
 
-function functionEditEmp() {
-	var table = document.getElementById('listEmployee');
-	for (var i = 0; i < table.rows.length; i++) {
-		table.rows[i].onclick = function name() {
-			var employeeId = document.getElementById('employeeId').value = this.cells[0].innerHTML;
-
-			$.ajax({
-				url: "getAllRoleName",
-				type: "Get",
-				contentType: "application/json",
-
-				success: function (res) {
-					var data = "";
-					for (var i = 0; i < res.length; i++) {
-						data += "<option value='" + res[i].roleId + "'>"
-							+ res[i].roleName + "</option>";
-					}
-					$('#optionRoles').html(data);
-					$.ajax({
-						url: "getEmpForUpdate",
-						type: "Get",
-						data: {
-							employeeId: employeeId,
-						},
-						success: function (data) {
-							$("#employeeID").val(data.employeeId);
-							$("#employeeName").val(data.employeeName);
-							$("#userEmp").val(data.userEmp);
-							$("#passwordEmp").val(data.passwordEmp);
-							$("#department").val(data.department);
-							$("#dateOfBirth").val(data.dateOfBirth);
-							$("#sex").val(data.sex);
-							$("#addressEmp").val(data.addressEmp);
-							$("#emailAddress").val(data.emailAddress);
-							$("#phoneNumber").val(data.phoneNumber);
-							$("#optionRoles").val(data.roleName == 'Admin' ? 1 : 2);
-							$("#prev-img").attr("src", data.images);
-						},
-						error: function () {
-							swal("Error", "Your imaginary file is safe ??",
-								"error");
-						}
-					});
-				},
-				error: function () {
-					alert("error");
-				}
-			});
-		};
-	}
+function functionEditEmp(employeeId) {
+	$.ajax({
+		url: '/Admin/Home/getEmpForUpdate' + '?employeeId=' + employeeId,
+		type: "Get",
+		data: '',
+		contentType: 'application/json; charset=utf-8',
+		dataType: 'json',
+		success: function (data) {
+			$("#employeeID").val(data.Employee_ID);
+			$("#employeeName").val(data.Employee_Name);
+			$("#userEmp").val(data.User_emp);
+			$("#department").val(data.Department);
+			$("#dateOfBirth").val(data.Date_Of_Birth);
+			$("#sex").val(data.Sex);
+			$("#addressEmp").val(data.Address_emp);
+			$("#emailAddress").val(data.Email_Address);
+			$("#phoneNumber").val(data.Phone_Number);
+			$("#optionRoles").val(data.roleName == 'Admin' ? 1 : 2);
+			$("#prev-img").attr("src", data.images);
+		},
+		error: function () {
+			swal("Error", "Get Information Employee Faile ??",
+				"error");
+		}
+	});
 };
+
 function ListRoleName() {
 	$.ajax({
 		url: "getAllRoleName",
@@ -327,3 +307,180 @@ $("#sex").change(function () {
 		$("#prev-img").attr("src", $("#female-src").html());
 	}
 });
+
+$(document).on("click", "#add-employee", function () {
+	$("#employeeID").val("");
+	$("#employeeName").val("");
+	$("#userEmp").val("");
+	$("#passwordEmp").val("");
+	$("#department").val("");
+	$("#dateOfBirth").val("");
+	$("#sex").val("Nam");
+	$("#addressEmp").val("");
+	$("#emailAddress").val("");
+	$("#phoneNumber").val("");
+	$("#optionRoles").val(1);
+	$("#prev-img").attr("src", $("#male-src").html());
+	$(".for-update").each(function () {
+		$(this).addClass("hide");
+	});
+	$(".for-add").each(function () {
+		$(this).removeClass("hide");
+	});
+	$("#myModal-update").modal("show");
+});
+$(document).on("click", "#update-employee", function () {
+	$(".for-add").each(function () {
+		$(this).addClass("hide");
+	});
+	$(".for-update").each(function () {
+		$(this).removeClass("hide");
+	});
+	$("#myModal-update").modal("show");
+});
+//choose images
+$(document).on("click", "#prev-img", function () {
+	$("#choose-file").click();
+
+});
+//display image
+$("#choose-file").change(function () {
+	$("#btn-upload").click();
+});
+
+//image-defaul
+$("#sex").change(function () {
+	if ($(this).val() == "Nam") {
+		$("#prev-img").attr("src", $("#male-src").html());
+	} else {
+		$("#prev-img").attr("src", $("#female-src").html());
+	}
+});
+
+//submit add
+$(document).on("click", "#submit-add-btn", function () {
+	var employeeName = document.getElementById("employeeName").value;
+	var userEmp = document.getElementById("userEmp").value;
+	var passwordEmp = document.getElementById("passwordEmp").value;
+	var department = document.getElementById("department").value;
+	var dateOfBirth = document.getElementById("dateOfBirth").value;
+	var images = $("#prev-img").attr("src");
+	var e = document.getElementById("sex");
+	var sex = e.options[e.selectedIndex].value;
+
+	var addressEmp = document.getElementById("addressEmp").value;
+	var emailAddress = document.getElementById("emailAddress").value;
+	var phoneNumber = document.getElementById("phoneNumber").value;
+
+	var a = document.getElementById("optionRoles");
+	var optionRoles = a.options[e.selectedIndex].value;
+	$.ajax({
+		url: "/Admin/Home/addEmployee",
+		type: "post",
+		data: {
+			employeeName: employeeName,
+			userEmp: userEmp,
+			passwordEmp: passwordEmp,
+			images: images,
+			department: department,
+			dateOfBirth: dateOfBirth,
+			sex: sex,
+			addressEmp: addressEmp,
+			emailAddress: emailAddress,
+			phoneNumber: phoneNumber,
+			optionRoles: optionRoles,
+		},
+		success: function (data) {
+			localStorage.setItem("swal",
+				swal({
+					title: "Success!",
+					text: "Message sent",
+					type: "success",
+					timer: 800,
+					showConfirmButton: false
+				})
+			);
+			window.setTimeout(function () {
+				location.reload();
+			}, 800);
+		},
+		error: function () {
+			swal("Error", "Your imaginary file is safe ??", "error");
+
+		}
+
+	});
+});
+//submit update
+$(document).on("click", "#submit-update-btn", function () {
+	var employeeID = document.getElementById("employeeID").value;
+	var employeeName = document.getElementById("employeeName").value;
+	var userEmp = document.getElementById("userEmp").value;
+	var department = document.getElementById("department").value;
+	var dateOfBirth = document.getElementById("dateOfBirth").value;
+	var images = $("#prev-img").attr("src");
+	var e = document.getElementById("sex");
+	var sex = e.options[e.selectedIndex].value;
+
+	var addressEmp = document.getElementById("addressEmp").value;
+	var emailAddress = document.getElementById("emailAddress").value;
+	var phoneNumber = document.getElementById("phoneNumber").value;
+
+	var optionRoles = $("#optionRoles").val();
+	$.ajax({
+		url: '/Admin/Home/updateEmployee',
+		type: 'Post',
+		data: {
+
+			employeeID: employeeID,
+			employeeName: employeeName,
+			userEmp: userEmp,
+			images: images,
+			department: department,
+			dateOfBirth: dateOfBirth,
+			sex: sex,
+			addressEmp: addressEmp,
+			emailAddress: emailAddress,
+			phoneNumber: phoneNumber,
+			optionRoles: optionRoles,
+		},
+		success: function (data) {
+			localStorage.setItem("swal",
+				swal({
+					title: "Success!",
+					text: "Edit Employee Configuration",
+					type: "success",
+					timer: 800,
+					showConfirmButton: false
+				})
+			);
+			window.setTimeout(function () {
+				location.reload();
+			}, 800);
+		},
+		error: function () {
+			swal("Error", "Edit Employee faile ??", "error");
+
+		}
+
+	});
+});
+$(document).on("click", "#btn-upload", function () {
+	console.log($("#form-upload")[0]);
+	formData = new FormData($("#form-upload")[0]);
+	$.ajax({
+		url: "do-upload",
+		method: "post",
+		data: formData,
+		contentType: false,
+		processData: false,
+		success: function (fileUrl) {
+			$("#prev-img").attr("src", fileUrl);
+			$("#ava-upload").val(fileUrl);
+		}
+	});
+});
+
+function exportExcelEmp() {
+	$("#btn-download").parent().submit();
+}

@@ -62,5 +62,10 @@ namespace EntityFW.EF6
         public DateTime? Delete_at { get; set; }
 
         public int Delete_flag { get; set; }
+
+        public static implicit operator string(Employee v)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

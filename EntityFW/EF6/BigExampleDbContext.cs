@@ -8,7 +8,7 @@ namespace EntityFW.EF6
     public partial class BigExampleDbContext : DbContext
     {
         public BigExampleDbContext()
-            : base("name=BigExampleDbContext")
+            : base("name=BigExampleDbContext1")
         {
         }
 

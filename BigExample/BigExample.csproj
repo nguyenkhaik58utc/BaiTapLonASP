@@ -134,7 +134,6 @@
     <Content Include="Areas\Admin\Views\Home\AddOT.cshtml" />
     <Content Include="Areas\Admin\Views\Home\dsNhanVien.cshtml" />
     <Content Include="Areas\Admin\Views\Home\getRoles.cshtml" />
-    <Content Include="Areas\Admin\Views\Home\getInforEmp.cshtml" />
     <Content Include="Areas\Admin\Views\Home\addEmployee.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />

@@ -431,7 +431,6 @@ $(document).on("click", "#submit-update-btn", function () {
 		url: '/Admin/Home/updateEmployee',
 		type: 'Post',
 		data: {
-
 			employeeID: employeeID,
 			employeeName: employeeName,
 			userEmp: userEmp,

@@ -102,11 +102,11 @@ namespace BigExample.Areas.Admin.Controllers
         {
             
             var result = bigExampleDb.Employees.Where(s => s.Employee_ID == employeeID).FirstOrDefault<Employee>();
-           
             if (result != null)
             {
-                var account = bigExampleDb.Accounts.Where(a => a.User_emp == result.User_emp);
-
+                var account = bigExampleDb.Accounts.Where(a => a.User_emp == result.User_emp).FirstOrDefault<Account>();
+                account.User_emp = userEmp;
+                account.Role_ID = optionRoles;
                 result.Employee_Name = employeeName;
                 result.User_emp = userEmp;
                 result.Images = images;
@@ -116,6 +116,7 @@ namespace BigExample.Areas.Admin.Controllers
                 result.Address_emp = addressEmp;
                 result.Email_Address = emailAddress;
                 result.Phone_Number = phoneNumber;
+                bigExampleDb.SaveChanges();
                 return true;
             }
             else

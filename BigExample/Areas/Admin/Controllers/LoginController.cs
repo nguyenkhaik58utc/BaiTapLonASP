@@ -1,6 +1,7 @@
 ﻿using BigExample.Areas.Admin.Model;
 using BigExample.Code;
 using EntityFW;
+using EntityFW.EF6;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +13,10 @@ namespace BigExample.Areas.Admin.Controllers
 {
     public class LoginController : Controller
     {
+
+        BigExampleDbContext bigExampleDb = new BigExampleDbContext();
+
+
         [HttpGet]
         // GET: Admin/Login
         public ActionResult Index()
@@ -25,7 +30,11 @@ namespace BigExample.Areas.Admin.Controllers
             var result = new AccountModel().Login(model.UserName, model.PassWord);
             if(result && ModelState.IsValid)
             {
-                SessionHelper.SetSession(new UserSession() { UserName = model.UserName });
+                var selectAccount = bigExampleDb.Accounts.Where(a => a.User_emp == model.UserName).FirstOrDefault<Account>();
+                var selectEmp = bigExampleDb.Employees.Where(s => s.User_emp == model.UserName).FirstOrDefault<Employee>();
+                UserSession.idEmployee = selectEmp.Employee_ID;
+                UserSession.roleId = selectAccount.Role_ID;
+                UserSession.UserName = model.UserName;
                 return RedirectToAction("Index", "Home");
             }
                 else
@@ -33,6 +42,10 @@ namespace BigExample.Areas.Admin.Controllers
                     ModelState.AddModelError("", "Tên đăng nhập hoặc mật khẩu không đúng,");
                 }
             return View(model);
+        }
+        public ActionResult EditPassWord()
+        {
+            return View();
         }
     }
 }

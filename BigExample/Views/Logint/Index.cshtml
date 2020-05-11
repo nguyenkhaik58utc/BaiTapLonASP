@@ -1,8 +1,9 @@
 ﻿
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Đăng nhập";
 }
 
+@model BigExample.Areas.Admin.Model.LoginModel
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -16,8 +17,6 @@
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <!------ Include the above in your HEAD tag ---------->
     <link rel="stylesheet" href="~/css/logincss.css" />
-
-    <title>Login Page</title>
     <!--Fontawesome CDN-->
     <link rel="stylesheet"
           href="https://use.fontawesome.com/releases/v5.3.1/css/all.css">
@@ -28,33 +27,42 @@
     <div class="container">
         <div class="d-flex justify-content-center h-100">
             <div class="card">
-                <div >
-                    
-                    <img src="https://www.upsieutoc.com/images/2020/04/21/logo.png" alt="logo.png" border="0" width="398px" height="100px"/>
+                <div>
+                    <img src="~/images/logoPage1.png" style="height: 100px; padding-left:8px;padding-top:6px" alt="logo1.png" border="0" />
+                    <img src="~/images/logoPage.png" alt="logo.png" border="0" style=" height: 100px ;width: 305px; padding-top:6px" />
 
                 </div>
                 <div class="card-body">
-                    <form action="sign_in" method="post" name="myForm" action="process-action.html" onsubmit="return validateForm()">
-                        <div class="input-group form-group">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text"><i class="fas fa-user"></i></span>
-                            </div>
-                            <input type="text" class="form-control" placeholder="username" name="username" id="username" value="" required>
+                    @using (Html.BeginForm())
+                    {
+                        @Html.AntiForgeryToken()
+                        @Html.ValidationSummary(true, null, new { @class = "alert alert-danger" })
+                        <form name="myForm">
+                            <div class="input-group form-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><i class="fas fa-user"></i></span>
+                                </div>
+                                @Html.TextBoxFor(model => model.UserName, new { @class = "form-control", @placeholder = "Username", @autofocus = "autofocus" })
 
-                        </div>
-                        <div class="input-group form-group">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text"><i class="fas fa-key"></i></span>
                             </div>
-                            <input type="password" class="form-control"
-                                   placeholder="password" name="password" id="password" value="" required>
-                        </div>
+                            <div class="input-group form-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><i class="fas fa-key"></i></span>
+                                </div>
+                                @Html.TextBoxFor(model => model.PassWord, new { @class = "form-control", @placeholder = "PassWord", @type = "password" })
+                            </div>
+                            <div class="checkbox">
+                                <label>
+                                    @Html.CheckBoxFor(model => model.RememberMe) Remember Me
+                                </label>
+                            </div>
 
-                        <div class="form-group">
-                            <input type="submit" value="Login"
-                                   class="btn float-right login_btn">
-                        </div>
-                    </form>
+                            <div class="form-group">
+                                <input type="submit"
+                                       class="btn float-right login_btn">
+                            </div>
+                        </form>
+                    }
                 </div>
                 <div class="card-footer">
                     <div class="d-flex justify-content-center">
@@ -66,4 +74,53 @@
     </div>
 </body>
 </html>
+<script>
+    function login() {
+        var userName = document.getElementById("UserName").value;
+        $
+            .ajax({
+                url: "/Admin/Home/inforUserLogin",
+                type: "Get",
+                data: {
+                    userName: userName,
+                },
+                success: function (res) {
+                    $("#abcDe").val("Chức vụ : " + res.Department);
+                    /*var data = "";
+                    data += "<p hidden> Mã nhân viên: "
+                        + res.Employee_ID
+                        + "</p><h5 class='nameEmp' > "
+                        + res.Employee_Name
+                        + "</h5><p style='color: #FFFFFF;''>Chức vụ: "
+                        + res.Department
+                        + "</p><h7 style='padding-right: 164px; color: #FFFFFF'>Thông Tin Cá Nhân</h7><table class='ifmEmp'><thead></thead>"
+                        + "<tbody><tr><th scope='row'><i class='fas fa-user-circle'></i></th>"
+                        + "<td >"
+                        + res.User_emp
+                        + "</td></tr><tr><th scope='row'><i class='far fa-calendar-alt'></i></th>"
+                        + "<td >"
+                        + res.Date_Of_Birth
+                        + "</td></tr><tr><th scope='row'><i class='fas fa-male'></i></th>"
+                        + "<td >"
+                        + res.Sex
+                        + "</td></tr> <tr><th scope='row'><i class='fas fa-phone-alt'></i></th>"
+                        + "<td >"
+                        + res.Phone_Number
+                        + "</td></tr><tr><th scope='row'><i class='far fa-envelope'></i></th>"
+                        + "<td >"
+                        + res.Email_Address
+                        + "</td></tr><tr><th scope='row'><i class='fas fa-map-marker-alt'></i></th>"
+                        + "<td >"
+                        + res.Address_emp
+                        + "</td></tr></tbody></table>";
+                    $('#inforEmployee').html(data);*/
+                },
+                error: function () {
+                    alert("error");
+                }
+            });
+    }
+</script>
+
+
 

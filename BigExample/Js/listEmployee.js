@@ -5,64 +5,6 @@ var maxPage;
 var arrayEmp = new Array();
 var numberEmp;
 
-$(document).on(
-	"click",
-	".editInfor",
-	function () {
-		var arrayEditInfor = new Array();
-		$("#inforEmployee tbody").each(function (i0) {
-			var arrTemp = new Array();
-			$(this).find("td").each(function (i1) {
-
-				arrTemp[i1] = $(this).html();
-
-			});
-			arrayEditInfor.push(arrayInfor[0]["employeeId"]);
-			arrayEditInfor.push(arrTemp);
-		});
-		if (arrayInfor[0]["employeeId"] != arrayEditInfor[0]
-			|| arrayInfor[0]["userEmp"] != arrayEditInfor[1][0]
-			|| arrayInfor[0]["dateOfBirth"] != arrayEditInfor[1][1]
-			|| arrayInfor[0]["sex"] != arrayEditInfor[1][2]
-			|| arrayInfor[0]["phoneNumber"] != arrayEditInfor[1][3]
-			|| arrayInfor[0]["emailAddress"] != arrayEditInfor[1][4]
-			|| arrayInfor[0]["addressEmp"] != arrayEditInfor[1][5]) {
-			$
-				.ajax({
-					url: "editInfor",
-					type: "post",
-					data: {
-						employeeId: arrayEditInfor[0],
-						userEmp: arrayEditInfor[1][0],
-						dateOfBirth: arrayEditInfor[1][1],
-						sex: arrayEditInfor[1][2],
-						phoneNumber: arrayEditInfor[1][3],
-						emailAddress: arrayEditInfor[1][4],
-						addressEmp: arrayEditInfor[1][5],
-					},
-					success: function (data) {
-						if (checkClick == 0) {
-							localStorage.setItem("swal", swal({
-								title: "Success!",
-								text: "Message sent",
-								type: "success",
-								timer: 800,
-								showConfirmButton: false
-							}));
-							window.setTimeout(function () {
-								location.reload();
-							}, 800);
-						}
-					},
-					error: function () {
-						swal("Error", "Your imaginary file is safe ??",
-							"error");
-					}
-
-				});
-		}
-
-	});
 function pagging(index) {
 	var offset = (index - 1) * 5;
 	page = index;
@@ -73,7 +15,7 @@ function pagging(index) {
 			$(this).parent().addClass("active");
 		}
 	});
-	$
+	/*$
 		.ajax({
 			url: "listEmp",
 			type: "get",
@@ -106,9 +48,9 @@ function pagging(index) {
 				$('#tableEmp').excelTableFilter();
 			},
 			error: function () {
-				alert("error");
+				alert("error list Emp");
 			}
-		});
+		});*/
 
 }
 $(document).on("click", ".page-number", function () {
@@ -183,6 +125,9 @@ function functionDeleteEmp() {
 					showConfirmButton: false
 				}));
 			}, 800);
+			window.setTimeout(function () {
+				location.reload();
+			}, 800);
 
 		},
 		error: function () {
@@ -231,6 +176,7 @@ function functionEditEmp(employeeId) {
 			$("#phoneNumber").val(data.Phone_Number);
 			$("#optionRoles").val(data.roleName == 'Admin' ? 1 : 2);
 			$("#prev-img").attr("src", data.images);
+
 		},
 		error: function () {
 			swal("Error", "Get Information Employee Faile ??",
@@ -254,7 +200,7 @@ function ListRoleName() {
 			$('#optionRoles').html(data);
 		},
 		error: function () {
-			alert("error");
+			alert("error listRoleName");
 		}
 	});
 }
@@ -329,39 +275,12 @@ $(document).on("click", "#add-employee", function () {
 	});
 	$("#myModal-update").modal("show");
 });
-$(document).on("click", "#update-employee", function () {
-	$(".for-add").each(function () {
-		$(this).addClass("hide");
-	});
-	$(".for-update").each(function () {
-		$(this).removeClass("hide");
-	});
-	$("#myModal-update").modal("show");
-});
-//choose images
-$(document).on("click", "#prev-img", function () {
-	$("#choose-file").click();
 
-});
-//display image
-$("#choose-file").change(function () {
-	$("#btn-upload").click();
-});
-
-//image-defaul
-$("#sex").change(function () {
-	if ($(this).val() == "Nam") {
-		$("#prev-img").attr("src", $("#male-src").html());
-	} else {
-		$("#prev-img").attr("src", $("#female-src").html());
-	}
-});
 
 //submit add
 $(document).on("click", "#submit-add-btn", function () {
 	var employeeName = document.getElementById("employeeName").value;
 	var userEmp = document.getElementById("userEmp").value;
-	var passwordEmp = document.getElementById("passwordEmp").value;
 	var department = document.getElementById("department").value;
 	var dateOfBirth = document.getElementById("dateOfBirth").value;
 	var images = $("#prev-img").attr("src");
@@ -376,11 +295,10 @@ $(document).on("click", "#submit-add-btn", function () {
 	var optionRoles = a.options[e.selectedIndex].value;
 	$.ajax({
 		url: "/Admin/Home/addEmployee",
-		type: "post",
+		type: "Post",
 		data: {
 			employeeName: employeeName,
 			userEmp: userEmp,
-			passwordEmp: passwordEmp,
 			images: images,
 			department: department,
 			dateOfBirth: dateOfBirth,
@@ -483,3 +401,57 @@ $(document).on("click", "#btn-upload", function () {
 function exportExcelEmp() {
 	$("#btn-download").parent().submit();
 }
+
+function convertDate1(data) {
+	var getdate = parseInt(data.replace("/Date(", "").replace(")/", ""));
+	var ConvDate = new Date(getdate);
+	var month = parseInt(ConvDate.getMonth()) + 1;
+	return ConvDate.getDate() + "/" + month + "/" + ConvDate.getFullYear();
+}
+
+$(document).ready(function () {
+	$
+		.ajax({
+			url: "/Admin/Home/inforUserLogin",
+			type: "Get",
+			success: function (res) {
+				var img = "";
+				img += "<center> "
+					+ " <img id = 'imageUserLogin' class='rounded-circle img-thumbnail imageEmployee' src = '" + res.Images + "' style = 'height:30% ; width : 40%; padding-top : 20px; margin-top : 20px' ></img>"
+					+ " <p style='color: #FFFFFF;margin-top : 10px; font-size: 24px;margin-bottom: 0px' id='nameUserLogin'>" + res.Employee_Name + "</p>"
+					+ " <p style='color: #FFFFFF;margin-top : 10px; font-size: 24px;margin-bottom: 0px' id='departmentUserLogin'> "
+					+ " <h7 style=' color: #FFFFFF; font-size: 24px'>Thông Tin Cá Nhân</h7>"
+					+ "</center>";
+				$('#imgEmp').html(img);
+				var data = "";
+				var split1 = res.Date_Of_Birth.split("(");
+				var split2 = split1[1].split(")");
+				var date = convertDate1(split2[0]);
+				data += "<tbody><tr><th scope='row'><i class='fas fa-user-circle'></i></th>"
+					+ "<td contenteditable='true'>"
+					+ res.User_emp
+					+ "</td></tr><tr><th scope='row'><i class='far fa-calendar-alt'></i></th>"
+					+ "<td contenteditable='true'>"
+					+ date
+					+ "</td></tr><tr><th scope='row'><i class='fas fa-male'></i></th>"
+					+ "<td contenteditable='true'>"
+					+ res.Sex
+					+ "</td></tr> <tr><th scope='row'><i class='fas fa-phone-alt'></i></th>"
+					+ "<td contenteditable='true'>"
+					+ res.Phone_Number
+					+ "</td></tr><tr><th scope='row'><i class='far fa-envelope'></i></th>"
+					+ "<td contenteditable='true'>"
+					+ res.Email_Address
+					+ "</td></tr><tr><th scope='row'><i class='fas fa-map-marker-alt'></i></th>"
+					+ "<td contenteditable='true'>"
+					+ res.Address_emp
+					+ "</td></tr></tbody>";
+				$('#inforEmployee').html(data);
+			},
+			error: function () {
+				alert("error getInfor");
+			}
+		});
+
+
+});

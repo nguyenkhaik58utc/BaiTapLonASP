@@ -3,6 +3,8 @@
     ViewBag.Title = "AddOT";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
+@using EntityFW.EF6;
+@model List<Registration_Detail>
 
 
 <div class="container-fluid">
@@ -71,8 +73,8 @@
                     <th>action</th>
                 </tr>
             </thead>
-            <tbody>
-                <tr data-index="0"><td hidden="">5</td><td class="data-edit regis-date" contenteditable="true">2020-04-22</td><td class="data-edit time-start" contenteditable="true">17:00:00</td><td class="data-edit time-finish" contenteditable="true">19:00:00</td><td class="data-edit reason" contenteditable="true">abc</td><td class="not-edit"> </td><td class="not-edit">Chờ Duyệt</td><td class="not-edit"><a class="delete1" title="Delete1" data-target="#myModalAdd2" onclick="functionDeleteTime()" data-toggle="modal"><i class=" fas fa-trash" style="color: red;" i="" aria-hidden="true"></i></a></td></tr>
+            <tbody id="tableRegistration">
+                
             </tbody>
         </table>
     </div>

@@ -91,8 +91,91 @@ function calculateGrandTotal() {
 	$("#grandtotal").text(grandTotal.toFixed(2));
 }
 
+function convertDate(data) {
+	var getdate = parseInt(data.replace("/Date(", "").replace(")/", ""));
+	var ConvDate = new Date(getdate);
+	var month = parseInt(ConvDate.getMonth()) + 1;
+	return ConvDate.getFullYear() + "/" + month + "/" + ConvDate.getDate();
+}
+
 // Hiê?n thi? ba?ng dang ky´ li?ch la`m viê?c OT
 var arrayData = new Array();
+$(document)
+	.ready(
+		function () {
+			var arrAddr = new Array();
+			$
+				.ajax({
+					url: "/Admin/Registration/tableRegistration",
+					type: "POST",
+					data: {
+						month: month,
+						year: year
+					},
+					success: function (res) {
+						
+						var data = "";
+						for (var i = 0; i < res.length; i++) {
+							var split1 = res[i].Registration_Date.split("(");
+							var split2 = split1[1].split(")");
+							var dateRegistration = convertDate(split2[0]); 
+							arrayData[i] = { "otId": res[i].OT_ID, "registrationDate": dateRegistration, "timeStart": res[i].Time_Start.Hours + ":" + res[i].Time_Start.Minutes + ":00", "timeFinish": res[i].Time_Finish.Hours + ":" + res[i].Time_Finish.Minutes + ":00", "reason": res[i].Reason };
+							// arrAddr[i] =
+						}
+						for (var i = 0; i < res.length; i++) {
+							var split1 = res[i].Registration_Date.split("(");
+							var split2 = split1[1].split(")");
+							var dateRegistration = convertDate(split2[0]); 
+							if (res[i].Status_flag == 2) {
+								data += "<tr data-index='" + i + "'><td hidden>"
+									+ res[i].OT_ID
+									+ "</td><td class='data-edit regis-date' contenteditable='true'>"
+									+ dateRegistration
+									+ "</td><td class='data-edit time-start' contenteditable='true'>"
+									+ res[i].Time_Start.Hours + ":" + res[i].Time_Start.Minutes + ":00"
+									+ "</td><td class='data-edit time-finish' contenteditable='true'>"
+									+ res[i].Time_Finish.Hours + ":" + res[i].Time_Finish.Minutes + ":00"
+									+ "</td><td class='data-edit reason' contenteditable='true'>"
+									+ res[i].Reason
+									+ "</td><td class='not-edit'> "
+									+ "</td><td class='not-edit'>Chờ Duyệt "
+									+ "</td><td class='not-edit'>"
+									+ "<a class='delete1' title='Delete1' data-target='#myModalAdd2' onclick='functionDeleteTime()'  class='btn btn-info btn-lg'  data-toggle='modal'><i class=' fas fa-trash' style='color: red;'></i></a></td></tr>";
+								$('#tableRegistration').html(data);
+
+							}
+							else {
+								var status;
+								if (res[i].Status_flag == 1) {
+									status = "Đã duyệt";
+								}
+								else status = "bị hủy";
+								data += "<tr data-index='" + i + "'><td hidden>"
+									+ res[i].OT_ID
+									+ "</td><td >"
+									+ dateRegistration
+									+ "</td><td>"
+									+ res[i].Time_Start.Hours + ":" + res[i].Time_Start.Minutes + ":00"
+									+ "</td><td>"
+									+ res[i].Time_Finish.Hours + ":" + res[i].Time_Finish.Minutes + ":00"
+									+ "</td><td>"
+									+ res[i].Reason
+									+ "</td><td>"
+									+ res[i].Reason_For_Cancel
+									+ "</td><td>"
+									+ status
+									+ "</td><td></td></tr>";
+								$('#tableRegistration').html(data);
+							}
+						}
+					},
+					error: function () {
+						alert("error kjashdjdhasjdhsjka");
+					}
+				});
+		});
+
+
 
 
 
@@ -376,7 +459,7 @@ function editTime() {
 				arrAddr = [];
 				$
 					.ajax({
-						url: "editTime",
+						url: "/Admin/Registration/editRegistrationDetail",
 						type: "post",
 						data: {
 							OtId: arrayEdit[i][0],
@@ -402,7 +485,7 @@ function editTime() {
 							}
 						},
 						error: function () {
-							swal("Error", "Your imaginary file is safe ??", "error");
+							swal("Error", "Change Registration False", "error");
 						}
 
 					});
@@ -459,7 +542,7 @@ function addTime() {
 		arrAddr = [];
 		$
 			.ajax({
-				url: "ThemLich",
+				url: "/Admin/Registration/addRegistrationDetail",
 				type: "post",
 				data: {
 					NgayDangKy: NgayDangKy,
@@ -509,15 +592,17 @@ function functionDelete() {
 	}
 	document.getElementById("myTable").deleteRow(row + 1);
 	arrayData.splice(row, 1);
+	
+	
 	$.ajax({
-		url: "deleteResgitration",
+		url: "/Admin/Registration/deleteResgitration",
 		type: "POST",
 		data: {
 			otId: otId,
 			LyDoHuy: LyDoHuy,
 		},
 		success: function (data) {
-
+			
 			window.setTimeout(function () {
 				localStorage.setItem("swal",
 					swal({
@@ -584,7 +669,7 @@ function functionSearch(searchId, index) {
 
 			},
 			error: function () {
-				alert("error");
+				alert("error add");
 			}
 		});
 }
@@ -625,7 +710,8 @@ function PagitrationByMonth(id, index) {
 					// arrAddr[i] =
 				}
 				for (var i = 0; i < res.length; i++) {
-					if (res[i].statusFlag == 2) {
+					if (res[i].Status_flag == 2) {
+
 						data += "<tr data-index='" + i + "'><td hidden>"
 							+ res[i].otId
 							+ "</td><td class='data-edit regis-date' contenteditable='true'>"
@@ -637,12 +723,16 @@ function PagitrationByMonth(id, index) {
 							+ "</td><td class='data-edit reason' contenteditable='true'>"
 							+ res[i].reason
 							+ "</td><td class='not-edit'> "
-							+ "</td><td class='not-edit'>"
-							+ res[i].statusName
+							+ "</td><td class='not-edit'>Chờ duyệt"
 							+ "</td><td class='not-edit'>"
 							+ "<a class='delete1' title='Delete1' data-target='#myModalAdd2' onclick='functionDelete1()'  class='btn btn-info btn-lg'  data-toggle='modal'><i class=' fas fa-trash' style='color: red;' /i></a></td></tr>";
 
 					} else {
+						var status;
+						if (res[i].Status_flag == 1) {
+							status = "Đã duyệt";
+						}
+						else status = "bị hủy";
 						data += "<tr data-index='" + i + "'><td hidden>"
 							+ res[i].otId
 							+ "</td><td >"
@@ -656,7 +746,7 @@ function PagitrationByMonth(id, index) {
 							+ "</td><td>"
 							+ res[i].reasonForCancel
 							+ "</td><td>"
-							+ res[i].statusName
+							+ status
 							+ "</td><td></td></tr>";
 
 					}

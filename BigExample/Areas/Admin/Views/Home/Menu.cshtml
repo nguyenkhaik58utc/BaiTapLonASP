@@ -13,7 +13,7 @@
                 <ul class="list-unstyled">
                     @foreach (var item in Model)
                     {
-                        <li><a href="@Url.Action(item.menu_url, "Home", null)">@item.menu_name</a></li>
+                        <li><a href="@Url.Action(item.menu_url, item.menu_screen, null)">@item.menu_name</a></li>
                     }
                     <li><a href="">Đăng xuất</a></li>
                 </ul>

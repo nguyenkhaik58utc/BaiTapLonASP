@@ -23,5 +23,10 @@ namespace BigExample.Code
                 return session as UserSession;
             }
         }
+
+        internal static void SetSession(string v)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

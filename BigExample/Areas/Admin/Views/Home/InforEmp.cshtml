@@ -1,51 +1,7 @@
-﻿@using EntityFW.EF6;
-@model List<Employee>
-    <center>
-        <img class="rounded-circle img-thumbnail imageEmployee" src="@Model[0].Images" style="height:30% ; width : 40%; padding-top : 20px; margin-top : 20px">
-
-        <p style="color: #FFFFFF;margin-top : 10px; font-size: 24px;margin-bottom: 0px">
-            Chức vụ: @Model[0].Department
-
-        </p><h7 style=" color: #FFFFFF; font-size: 24px">Thông Tin Cá Nhân</h7>
-    </center>
+﻿<div id="imgEmp"></div>
 <table class="ifmEmp">
-    <tbody>
-        <tr>
-            <th scope="row"><i class="fas fa-user-circle"></i></th>
-            <td >
-                @Model[0].Employee_Name
-            </td>
-        </tr>
-        <tr>
-            <th scope="row"><i class="far fa-calendar-alt"></i></th>
-            <td >
-                @Model[0].Date_Of_Birth
-            </td>
-        </tr>
-        <tr>
-            <th scope="row"><i class="fas fa-male"></i></th>
-            <td >
-                @Model[0].Sex
-            </td>
-        </tr>
-        <tr>
-            <th scope="row"><i class="fas fa-phone-alt"></i></th>
-            <td >
-                @Model[0].Phone_Number
-            </td>
-        </tr>
-        <tr>
-            <th scope="row"><i class="far fa-envelope"></i></th>
-            <td >
-                @Model[0].Email_Address
-            </td>
-        </tr>
-        <tr>
-            <th scope="row"><i class="fas fa-map-marker-alt"></i></th>
-            <td >
-                @Model[0].Address_emp
-            </td>
-        </tr>
-    </tbody>
+    <tbody id="inforEmployee">
+      </tbody>
 
 </table>
+

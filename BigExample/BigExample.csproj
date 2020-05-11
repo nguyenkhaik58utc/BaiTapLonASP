@@ -110,6 +110,7 @@
     <Content Include="css\lock.css" />
     <Content Include="css\logincss.css" />
     <Content Include="css\menu.css" />
+    <Content Include="css\password.css" />
     <Content Include="css\sideBar.css" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -121,6 +122,7 @@
     <Content Include="Js\listEmployee.js" />
     <Content Include="Js\lock.js" />
     <Content Include="Js\menu.js" />
+    <Content Include="Js\password.js" />
     <Content Include="Js\sideBar.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -130,11 +132,11 @@
     <Content Include="Areas\Admin\Views\Login\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Home\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Home\Menu.cshtml" />
-    <Content Include="Areas\Admin\Views\Home\InforEmp.cshtml" />
     <Content Include="Areas\Admin\Views\Home\AddOT.cshtml" />
     <Content Include="Areas\Admin\Views\Home\dsNhanVien.cshtml" />
     <Content Include="Areas\Admin\Views\Home\getRoles.cshtml" />
-    <Content Include="Areas\Admin\Views\Home\addEmployee.cshtml" />
+    <Content Include="Areas\Admin\Views\Home\InforEmp.cshtml" />
+    <Content Include="Areas\Admin\Views\Login\EditPassWord.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
@@ -148,6 +150,7 @@
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
     <Compile Include="Areas\Admin\Controllers\HomeController.cs" />
     <Compile Include="Areas\Admin\Controllers\LoginController.cs" />
+    <Compile Include="Areas\Admin\Controllers\RegistrationController.cs" />
     <Compile Include="Areas\Admin\Model\EmployeeModel.cs" />
     <Compile Include="Areas\Admin\Model\LoginModel.cs" />
     <Compile Include="Code\SessionHelper.cs" />
@@ -188,6 +191,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Admin\Data\" />
+    <Folder Include="Areas\Admin\Views\Registration\" />
     <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>

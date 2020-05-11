@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using EntityFW.EF6;
 using BigExample.Areas.Admin.Model;
+using BigExample.Code;
 
 namespace BigExample.Areas.Admin.Controllers
 {
@@ -22,18 +23,16 @@ namespace BigExample.Areas.Admin.Controllers
 
         public ActionResult AddOT()
         {
-
+            
             return View();
         }
         [HttpGet]
-        /*public JsonResult deleteEmp(int id)
-        {
-
-        }*/
+        
 
         public ActionResult dsNhanVien()
         {
-            return View(bigExampleDb.Employees.ToList());
+
+            return View(bigExampleDb.Employees.Where(e => e.Delete_flag == 1).ToList());
         }
         public PartialViewResult Menu()
         {
@@ -43,14 +42,53 @@ namespace BigExample.Areas.Admin.Controllers
         {
             return PartialView(bigExampleDb.Roles.ToList());
         }
-        public PartialViewResult addEmployee()
+        public PartialViewResult InforEmp()
         {
             return PartialView();
         }
-        public PartialViewResult InforEmp()
+
+        [HttpGet]
+        public JsonResult inforUserLogin()
         {
-            return PartialView(bigExampleDb.Employees.ToList());
+            try
+            {
+                
+                    var selectEmp = bigExampleDb.Employees.Where(s => s.User_emp == UserSession.UserName).FirstOrDefault<Employee>();
+                    // đối tượng trả về
+                    EmployeeModel employee = new EmployeeModel
+                    {
+                        Employee_ID = selectEmp.Employee_ID,
+                        Employee_Name = selectEmp.Employee_Name,
+                        Images = selectEmp.Images,
+                        User_emp = selectEmp.User_emp,
+                        Department = selectEmp.Department,
+                        Date_Of_Birth = selectEmp.Date_Of_Birth,
+                        Sex = selectEmp.Sex,
+                        Address_emp = selectEmp.Address_emp,
+                        Email_Address = selectEmp.Email_Address,
+                        Phone_Number = selectEmp.Phone_Number,
+                    };
+                    return Json(new
+                    {
+                        Employee_ID = selectEmp.Employee_ID,
+                        Employee_Name = selectEmp.Employee_Name,
+                        Images = selectEmp.Images,
+                        User_emp = selectEmp.User_emp,
+                        Department = selectEmp.Department,
+                        Date_Of_Birth = selectEmp.Date_Of_Birth,
+                        Sex = selectEmp.Sex,
+                        Address_emp = selectEmp.Address_emp,
+                        Email_Address = selectEmp.Email_Address,
+                        Phone_Number = selectEmp.Phone_Number
+                    }, JsonRequestBehavior.AllowGet);
+                
+            }
+            catch
+            {
+                return Json(null, JsonRequestBehavior.AllowGet);
+            }
         }
+
         [HttpGet]
         public JsonResult getEmpForUpdate(int employeeId)
         {
@@ -96,11 +134,13 @@ namespace BigExample.Areas.Admin.Controllers
             return Json(null, JsonRequestBehavior.AllowGet);
         }
 
+
+
         [HttpPost]
         public Boolean updateEmployee(int employeeID, string employeeName, string userEmp, string images, string department,
             DateTime dateOfBirth, string sex, string addressEmp, string emailAddress, string phoneNumber, int optionRoles)
         {
-            
+
             var result = bigExampleDb.Employees.Where(s => s.Employee_ID == employeeID).FirstOrDefault<Employee>();
             if (result != null)
             {
@@ -124,6 +164,50 @@ namespace BigExample.Areas.Admin.Controllers
         }
 
         [HttpPost]
+        public Boolean addEmployee(string employeeName, string userEmp, string images, string department,
+            DateTime dateOfBirth, string sex, string addressEmp, string emailAddress, string phoneNumber, int optionRoles)
+        {
+
+
+            var emp = new Employee()
+            {
+                Employee_Name = employeeName,
+                User_emp = userEmp,
+                Images = images,
+                Department = department,
+                Date_Of_Birth = dateOfBirth,
+                Sex = sex,
+                Address_emp = addressEmp,
+                Email_Address = emailAddress,
+                Phone_Number = phoneNumber,
+                Delete_flag = 1
+            };
+
+
+            bigExampleDb.Employees.Add(emp);
+            bigExampleDb.SaveChanges();
+
+            var account = new Account()
+            {
+                User_emp = userEmp,
+                Password_emp = "123456789Aabc",
+                Role_ID = optionRoles
+            };
+            bigExampleDb.Accounts.Add(account);
+            bigExampleDb.SaveChanges();
+
+            var CheckAccount = bigExampleDb.Accounts.Where(a => a.User_emp == userEmp).FirstOrDefault<Account>();
+            var CheckEmp = bigExampleDb.Employees.Where(s => s.User_emp == userEmp).FirstOrDefault<Employee>();
+
+            if (CheckEmp != null && CheckAccount != null)
+            {
+                return true;
+            }
+            else
+                return false;
+        }
+
+        [HttpPost]
         public Boolean deleteEmployee(int employeeId)
         {
 
@@ -137,7 +221,6 @@ namespace BigExample.Areas.Admin.Controllers
             }
             else return false;
         }
-
-
+               
     }
 }

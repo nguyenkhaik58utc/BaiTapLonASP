@@ -23,6 +23,7 @@ namespace EntityFW
             {
                 new SqlParameter("@UserName",user),new SqlParameter("@PassWord",password)
             };
+            
             var res = bigExample.Database.SqlQuery<bool>(" Account_Login @UserName,@PassWord",
                 sqlParams).SingleOrDefault();
             return res;

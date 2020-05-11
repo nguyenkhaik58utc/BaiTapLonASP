@@ -13,7 +13,7 @@ namespace EntityFW.EF6
         [Column(Order = 0)]
         public int Employee_ID { get; set; }
 
-        [Key]
+        
         [Column(Order = 1)]
         [StringLength(50)]
         public string User_emp { get; set; }
@@ -62,10 +62,5 @@ namespace EntityFW.EF6
         public DateTime? Delete_at { get; set; }
 
         public int Delete_flag { get; set; }
-
-        public static implicit operator string(Employee v)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

@@ -10,7 +10,9 @@ namespace EntityFW.EF6
     public partial class Account
     {
         [Key]
-        [Column(Order = 0)]
+        public int Account_ID { get; set; }
+
+        [Required]
         [StringLength(50)]
         public string User_emp { get; set; }
 
@@ -18,9 +20,6 @@ namespace EntityFW.EF6
         [StringLength(50)]
         public string Password_emp { get; set; }
 
-        [Key]
-        [Column(Order = 1)]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int Role_ID { get; set; }
 
         [StringLength(50)]
